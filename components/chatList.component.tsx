@@ -6,7 +6,6 @@ type ChatListProps = {
 };
 
 export default function ChatList({ items }: ChatListProps) {
-    console.log(items);
     return (
         <div className="bg-mainDarkBg w-1/4 overflow-y-auto chatlist-group">
             <ul>

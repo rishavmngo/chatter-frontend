@@ -36,9 +36,7 @@ export default function ChatListItem({ user }: chatListItemType) {
                 <p className="text-sm text-gray-400">I want to ask you...</p>
             </div>
             <div className="text-lg text-white/50">
-                {activeChatItem && (
-                    <p>{timeAgo(activeChatItem?.last_active_at, false)}</p>
-                )}
+                <p>{timeAgo(user.last_active_at, false)}</p>
             </div>
         </li>
     );

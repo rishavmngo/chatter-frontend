@@ -1,0 +1,14 @@
+.msg-mine {
+    align-self: flex-end;
+}
+.msg-other + .msg-other {
+    margin-top: 3px;
+}
+.msg-mine + .msg-mine {
+    margin-top: 3px;
+}
+
+.msg-other + .msg-mine,
+.msg-mine + .msg-other {
+    margin-top: 10px;
+}

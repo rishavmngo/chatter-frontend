@@ -1,24 +1,24 @@
 "use client";
-import { getServerSession } from "next-auth";
 import { useSession } from "next-auth/react";
-import {
-    createContext,
-    useContext,
-    useMemo,
-    useEffect,
-    ReactNode,
-} from "react";
+import { createContext, useMemo, useEffect, ReactNode, useState } from "react";
 
 type WSProviderProps = { children: ReactNode; url?: string };
 
-export const WSStateContext = createContext<WebSocket | null>(null);
+export const WSStateContext = createContext<WSStateContextType | null>(null);
 
 export default function WSProvider({
     children,
     url,
 }: WSProviderProps): JSX.Element {
     const { data, status } = useSession();
-
+    const [WSReady, setWSReady] = useState(false);
+    interface UserData {
+        user: {
+            id: string; // Define the correct type of id
+            // Other properties as needed
+        };
+        // Other properties as needed
+    }
     const wsInstance = useMemo(() => {
         return typeof window != "undefined" && status === "authenticated"
             ? new WebSocket(
@@ -35,8 +35,16 @@ export default function WSProvider({
         };
     }, []);
 
+    useEffect(() => {
+        if (wsInstance)
+            wsInstance.onopen = () => {
+                setWSReady(true);
+                console.log("hello world");
+            };
+    }, [wsInstance]);
+
     return (
-        <WSStateContext.Provider value={wsInstance}>
+        <WSStateContext.Provider value={{ wsInstance, WSReady, setWSReady }}>
             {children}
         </WSStateContext.Provider>
     );

@@ -9,14 +9,12 @@ import { WSStateContext } from "@/context/websocket.context";
 
 export default function MainChat() {
     const { activeChatItem, chatListItem } = useActiveChat();
-    const wsSocket = useContext(WSStateContext);
+    const { WSReady } = useContext(WSStateContext);
     useEventContext();
-    console.log(wsSocket);
     useEffect(() => {
-        // console.log(wsSocket);
-        // console.log("part 1");
+        console.log(WSReady, "part 1");
         sendMessage(Events.getAllChatsEvent);
-    }, [wsSocket, wsSocket?.readyState]);
+    }, [WSReady]);
 
     return (
         <div className="bg-mainDarkBg flex-grow flex h-full gap-2">

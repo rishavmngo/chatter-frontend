@@ -1,15 +1,20 @@
 import { useContext } from "react";
-import { WSStateContext } from "./websocket.context";
 import { Eventc, Events } from "@/lib/event";
 import { useActiveChat } from "./chats.context";
+import { WSStateContext } from "./websocket.context";
 
 const { sendMessageEvent, getAllChatsEvent } = Events;
 let wsSocket: WebSocket | null;
+let wsReadyGlobal: boolean;
 
 export default function useEventContext() {
     // wsSocket = useWS();
+    const { setWSReady, wsInstance, WSReady } = useContext(WSStateContext);
+    wsSocket = wsInstance;
+    wsReadyGlobal = WSReady;
+    // console.log(setWSReady, wsInstance);
 
-    wsSocket = useContext(WSStateContext);
+    console.log(WSReady);
     const { setChatListItem } = useActiveChat();
 
     function routeEvent(event: any) {
@@ -30,26 +35,25 @@ export default function useEventContext() {
         routeEvent(customData);
     }
 
-    function onOpen(event: Event) {
-        console.log("connection successful");
-    }
+    // function onOpen(event: Event) {
+    //     setWSReady(true);
+    //     console.log("connection successful");
+    // }
 
     function onError(error: Event) {
         console.log("Error occured", error);
     }
 
     if (wsSocket) {
-        wsSocket.onopen = onOpen;
+        // wsSocket.onopen = onOpen;
         wsSocket.onmessage = onMessage;
         wsSocket.onerror = onError;
     }
 }
 
 export function sendMessage(type: string, payload?: any) {
-    console.log("part 2");
-    if (!wsSocket?.readyState) return;
+    if (!wsReadyGlobal) return;
     const event = new Eventc(type, payload);
     const request = JSON.stringify(event);
-    console.log("part 3");
-    wsSocket.send(request);
+    wsSocket?.send(request);
 }

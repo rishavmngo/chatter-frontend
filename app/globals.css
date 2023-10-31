@@ -80,12 +80,12 @@
         @apply bg-background text-foreground;
     }
 }
+
 ::-webkit-scrollbar {
     width: 0.4em;
 }
 
 ::-webkit-scrollbar-track {
-    /* box-shadow: inset 0 0 6px red; */
 }
 
 ::-webkit-scrollbar-thumb {
@@ -96,5 +96,9 @@
 }
 
 .chatlist-group:hover::-webkit-scrollbar-thumb {
+    visibility: visible;
+}
+
+.chatting-box:hover::-webkit-scrollbar-thumb {
     visibility: visible;
 }

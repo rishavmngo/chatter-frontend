@@ -41,3 +41,9 @@ type TLogginedUser = {
     created_at: string;
     last_active_at: string;
 };
+
+type WSStateContextType = {
+    wsInstance: WebSocket | null;
+    WSReady: Boolean;
+    setWSReady: Dispatch<SetStateAction<boolean>>;
+};
