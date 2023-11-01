@@ -25,6 +25,7 @@ const handler = NextAuth({
                     if (data.error) {
                         throw data.error;
                     }
+                    console.log("user::::", data);
                     return data;
                 } catch (err) {
                     console.log(err);

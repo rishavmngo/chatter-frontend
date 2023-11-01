@@ -3,7 +3,7 @@ import { Eventc, Events } from "@/lib/event";
 import { useActiveChat } from "./chats.context";
 import { WSStateContext } from "./websocket.context";
 
-const { sendMessageEvent, getAllChatsEvent } = Events;
+const { sendMessageEvent, getAllChatsEvent, getAllMsgByChatID } = Events;
 let wsSocket: WebSocket | null;
 let wsReadyGlobal: boolean;
 
@@ -14,16 +14,17 @@ export default function useEventContext() {
     wsReadyGlobal = WSReady;
     // console.log(setWSReady, wsInstance);
 
-    console.log(WSReady);
-    const { setChatListItem } = useActiveChat();
+    const { setChatListItem, setActiveChatMessages } = useActiveChat();
 
     function routeEvent(event: any) {
         switch (event.type) {
             case sendMessageEvent:
                 break;
             case getAllChatsEvent:
-                console.log("receiving", event.payload);
                 setChatListItem(event.payload);
+                break;
+            case getAllMsgByChatID:
+                setActiveChatMessages(event.payload);
                 break;
             default:
                 console.log("event not implemented");

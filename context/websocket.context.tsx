@@ -12,19 +12,10 @@ export default function WSProvider({
 }: WSProviderProps): JSX.Element {
     const { data, status } = useSession();
     const [WSReady, setWSReady] = useState(false);
-    interface UserData {
-        user: {
-            id: string; // Define the correct type of id
-            // Other properties as needed
-        };
-        // Other properties as needed
-    }
     const wsInstance = useMemo(() => {
         return typeof window != "undefined" && status === "authenticated"
             ? new WebSocket(
-                  `ws://localhost:3001/chat/connection/${JSON.stringify({
-                      id: data?.user.id,
-                  })}`
+                  `ws://localhost:3001/chat/connection/${data?.accessToken}`
               )
             : null;
     }, [status]);

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 
 const ChatsItemContext = createContext<ChatsItemContextType | null>(null);
 
@@ -11,6 +11,10 @@ export default function ChatsContextProvider({
 }) {
     const [activeChatItem, setActiveChatItem] =
         useState<UserChatListItemType | null>(null);
+
+    const [activeChatMessages, setActiveChatMessages] = useState<
+        ActiveChatMessageType[]
+    >([]);
 
     const [chatListItem, setChatListItem] = useState<UserChatListItemType[]>(
         []
@@ -23,6 +27,8 @@ export default function ChatsContextProvider({
                 setActiveChatItem,
                 chatListItem,
                 setChatListItem,
+                activeChatMessages,
+                setActiveChatMessages,
             }}
         >
             {children}

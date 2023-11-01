@@ -12,7 +12,6 @@ export default function MainChat() {
     const { WSReady } = useContext(WSStateContext);
     useEventContext();
     useEffect(() => {
-        console.log(WSReady, "part 1");
         sendMessage(Events.getAllChatsEvent);
     }, [WSReady]);
 

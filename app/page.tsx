@@ -1,7 +1,6 @@
 "use client";
 import Navbar from "@/components/Navbar.component";
 import MainChat from "@/components/chatMain.component";
-import { useSession } from "next-auth/react";
 
 export default function Home() {
     return (

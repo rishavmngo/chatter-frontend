@@ -81,16 +81,25 @@
     }
 }
 
-::-webkit-scrollbar {
+.chatlist-group::-webkit-scrollbar {
     width: 0.4em;
 }
 
-::-webkit-scrollbar-track {
+::-webkit-scrollbar {
+    width: 0.4em;
+}
+.chatlist-group::-webkit-scrollbar-track {
+}
+
+.chatlist-group::-webkit-scrollbar-thumb {
+    background-color: gray;
+    visibility: hidden;
+    transition: visibility;
+    border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
     background-color: gray;
-    visibility: hidden;
     transition: visibility;
     border-radius: 10px;
 }

@@ -1,6 +1,8 @@
 export const Events = {
     sendMessageEvent: "sendMessage",
     getAllChatsEvent: "getAllChats",
+    getAllMsgByChatID: "getAllMsgByChatId",
+    sendMessagePChatEvent: "sendMessagePChat",
 };
 
 export class Eventc {

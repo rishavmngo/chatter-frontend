@@ -1,6 +1,12 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { timeAgo } from "@/lib/utils";
-import MessageItem from "./messageItem.component";
+import { sendMessage } from "@/context/event.context";
+import { Events } from "@/lib/event";
+import { useActiveChat } from "@/context/chats.context";
+import MessageBox from "./messagesBox.component";
+import { Textarea } from "./ui/textarea";
+import { Button } from "./ui/button";
+import { useSession } from "next-auth/react";
 
 type ChatMessageType = {
     user: UserChatListItemType;
@@ -8,19 +14,31 @@ type ChatMessageType = {
 
 export default function ChatMessageContainer({ user }: ChatMessageType) {
     const { partner_name, last_active_at } = user;
+    const [messageText, setMessageText] = useState("");
 
-    const chatBottom = useRef(null);
-    const msg = [
-        1, 1, 1, 2, 2, 1, 2, 1, 2, 2, 2, 1, 1, 1, 2, 2, 1, 2, 1, 2, 2, 1,
-    ].slice(0, 5);
+    const { activeChatMessages } = useActiveChat();
+    const { data } = useSession();
 
+    // const msg = [
+    //     1, 1, 1, 2, 2, 1, 2, 1, 2, 2, 2, 1, 1, 1, 2, 2, 1, 2, 1, 2, 2, 1,
+    // ].slice(0, 5);
     useEffect(() => {
-        if (chatBottom) {
-            chatBottom.current.scrollIntoView();
-        }
-    }, [chatBottom, user]);
+        sendMessage(Events.getAllMsgByChatID, {
+            chat_id: user.chat_id,
+        });
+    }, [user]);
+
+    const handleSubmit = () => {
+        sendMessage(Events.sendMessagePChatEvent, {
+            chat_id: user.chat_id,
+            author_id: data.user.id,
+            content: messageText,
+        });
+        setMessageText("");
+    };
+
     return (
-        <div className="bg-mainDarkBg p-2 flex-1 ">
+        <div className="bg-mainDarkBg p-2 flex-1 w-full">
             <section className="flex flex-col gap-2 h-full">
                 <div>
                     <h1 className="text-xl font-semibold text-white">
@@ -30,27 +48,21 @@ export default function ChatMessageContainer({ user }: ChatMessageType) {
                         {timeAgo(last_active_at)}
                     </p>
                 </div>
-                <section className="chatting-box h-[100px] p-2  flex-grow flex flex-col overflow-y-auto">
-                    {msg.map((item, index) => {
-                        return (
-                            <MessageItem
-                                key={`msg-${index}-key`}
-                                msg={{
-                                    content: `hello world-${index}`,
-                                }}
-                                mine={item === 2}
-                            />
-                        );
-                    })}
-
-                    <div
-                        ref={chatBottom}
-                        style={{
-                            float: "left",
-                            clear: "both",
-                            scrollBehavior: "smooth",
-                        }}
-                    ></div>
+                <MessageBox
+                    messages={{
+                        messagesArray: activeChatMessages,
+                        partner_uid: user.partner_uid,
+                    }}
+                />
+                <section className="bg-mainDarkBg h-10 w-full  flex  text-white items-center">
+                    {/* <Textarea className="resize-none" /> */}
+                    <textarea
+                        placeholder="Write msg...."
+                        className=" textareamsg resize-none rounded-md p-2  h-full border-none  outline-none flex-grow text-gray-800"
+                        value={messageText}
+                        onChange={(e) => setMessageText(e.target.value)}
+                    />
+                    <Button onClick={handleSubmit}>Send</Button>
                 </section>
             </section>
         </div>

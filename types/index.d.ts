@@ -13,6 +13,10 @@ type ChatsItemContextType = {
     >;
     activeChatItem: UserChatListItemType | null;
     setActiveChatItem: Dispatch<SetStateAction<UserChatListItemType | null>>;
+    activeChatMessages: ActiveChatMessageType[];
+    setActiveChatMessages: React.Dispatch<
+        React.SetStateAction<ActiveChatMessageType[]>
+    >;
 };
 
 type SocketContextType = {
@@ -46,4 +50,13 @@ type WSStateContextType = {
     wsInstance: WebSocket | null;
     WSReady: Boolean;
     setWSReady: Dispatch<SetStateAction<boolean>>;
+};
+
+type ActiveChatMessageType = {
+    id: number;
+    content: string;
+    chat_id: number;
+    message_created_at: string;
+    author_id: number;
+    author_name: string;
 };
